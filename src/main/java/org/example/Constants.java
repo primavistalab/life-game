@@ -4,7 +4,7 @@ public interface Constants {
     int WINDOW_WIDTH = 500;
     int WINDOW_HEIGHT = 500;
 
-    int CELL_SIZE = 15;
+    int CELL_SIZE = 10;
 
     int COLUMNS = WINDOW_WIDTH / CELL_SIZE;
     int ROWS = WINDOW_HEIGHT / CELL_SIZE;

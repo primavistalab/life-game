@@ -16,6 +16,12 @@ public class GameField extends JPanel {
     private final boolean[][] currentGeneration = new boolean[COLUMNS][ROWS];
     private final boolean[][] nextGenerationField = new boolean[COLUMNS][ROWS];
 
+    private int paintCount = 0;
+    private double totalPaintTime = 0;
+
+    private int generationCount = 0;
+    private double totalGenerationTime = 0;
+
     public GameField() {
         clear();
 
@@ -33,12 +39,18 @@ public class GameField extends JPanel {
 
     @Override
     protected void paintComponent(final Graphics g) {
+        final var paintStarted = System.nanoTime();
+        paintCount++;
+
         super.paintComponent(g);
         for (int col = 0; col < COLUMNS; col++) {
             for (int row = 0; row < ROWS; row++) {
                 drawCell(g, col, row, currentGeneration[col][row]);
             }
         }
+
+        final long paintTime = System.nanoTime() - paintStarted;
+        totalPaintTime += paintTime * 0.000001;
     }
 
     private void drawCell(final Graphics g, int col, int row, boolean isLife) {
@@ -50,6 +62,9 @@ public class GameField extends JPanel {
     }
 
     public void nextGeneration() {
+        final var generationStarted = System.nanoTime();
+        generationCount++;
+
         for (int col = 0; col < COLUMNS; col++) {
             for (int row = 0; row < ROWS; row++) {
                 final var aliveCellAround = aliveCellsAroundThis(col, row);
@@ -65,6 +80,9 @@ public class GameField extends JPanel {
         for (int col = 0; col < COLUMNS; col++) {
             System.arraycopy(nextGenerationField[col], 0, currentGeneration[col], 0, ROWS);
         }
+
+        final long generationTime = System.nanoTime() - generationStarted;
+        totalGenerationTime += generationTime * 0.000001;
     }
 
     private int aliveCellsAroundThis(int col, int row) {
@@ -80,6 +98,11 @@ public class GameField extends JPanel {
     }
 
     public void clear() {
+        paintCount = 0;
+        totalPaintTime = 0;
+        generationCount = 0;
+        totalGenerationTime = 0;
+
         for (int col = 0; col < COLUMNS; col++) {
             for (int row = 0; row < ROWS; row++) {
                 currentGeneration[col][row] = false;
@@ -97,5 +120,19 @@ public class GameField extends JPanel {
                 nextGenerationField[col][row] = r;
             }
         }
+    }
+
+    public double getMiddlePaintTimeInMs(){
+        if (paintCount == 0) return 0.0;
+        else return totalPaintTime / paintCount;
+    }
+
+    public double getMiddleGenerationTimeInMs() {
+        if (generationCount == 0) return 0.0;
+        else return totalGenerationTime / generationCount;
+    }
+
+    public int getGenerationCount() {
+        return generationCount;
     }
 }

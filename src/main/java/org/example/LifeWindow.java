@@ -2,15 +2,12 @@ package org.example;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.example.Constants.*;
 
 public class LifeWindow extends JFrame {
     private final GameField gameField = new GameField();
     private final Timer mainTimer;
-    private final AtomicInteger generation = new AtomicInteger(0);
-//    private AtomicBoolean gameStarted = new AtomicBoolean(false;)
 
     public LifeWindow() throws HeadlessException {
         setTitle("LIFE");
@@ -34,7 +31,7 @@ public class LifeWindow extends JFrame {
         });
 
         JButton randomButton = new JButton("Random");
-        randomButton.setBounds(WINDOW_WIDTH + 10, 85, 90, 25);
+        randomButton.setBounds(WINDOW_WIDTH + 10, 80, 90, 25);
         randomButton.addActionListener(e -> {
             randomField();
         });
@@ -45,7 +42,9 @@ public class LifeWindow extends JFrame {
 
         mainTimer = new Timer(GENERATION_DELAY, e -> {
             gameField.nextGeneration();
-            setTitle("LIFE .::. Generation: " + generation.incrementAndGet());
+            setTitle("LIFE .::. Generation No." + gameField.getGenerationCount() +
+                    " .::. Mid.Generation Time = " + String.format("%.2f", gameField.getMiddleGenerationTimeInMs()) + "ms." +
+                    " .::. Mid.Paint Time = " + String.format("%.2f", gameField.getMiddlePaintTimeInMs()) + "ms.");
             gameField.repaint();
         });
     }
@@ -55,7 +54,6 @@ public class LifeWindow extends JFrame {
             mainTimer.stop();
         }
         else {
-            generation.set(0);
             mainTimer.start();
         }
     }
