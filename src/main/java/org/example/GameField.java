@@ -72,9 +72,8 @@ public class GameField extends JPanel {
                 // в пустой (мёртвой) клетке, с которой соседствуют три живые клетки, зарождается жизнь;
                 if (!currentGeneration[col][row] && aliveCellAround == 3) nextGeneration[col][row] = true;
                     // если у живой клетки есть две или три живые соседки, то эта клетка продолжает жить;
-                else if (currentGeneration[col][row] && 2 <= aliveCellAround && aliveCellAround <= 3) nextGeneration[col][row] = true;
                     // в противном случае (если живых соседей меньше двух или больше трёх) клетка умирает («от одиночества» или «от перенаселённости»).
-                else nextGeneration[col][row] = false;
+                else nextGeneration[col][row] = (currentGeneration[col][row] && 2 <= aliveCellAround && aliveCellAround <= 3);
             }
         }
 
