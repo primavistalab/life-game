@@ -1,9 +1,9 @@
-package org.example;
+package ru.primavistalab.lifegame;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static org.example.Constants.*;
+import static ru.primavistalab.lifegame.Constants.*;
 
 public class LifeWindow extends JFrame {
     private final GameField gameField = new GameField();

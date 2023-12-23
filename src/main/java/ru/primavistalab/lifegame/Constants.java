@@ -1,4 +1,4 @@
-package org.example;
+package ru.primavistalab.lifegame;
 
 public interface Constants {
     int WINDOW_WIDTH = 800;

@@ -1,7 +1,4 @@
-package org.example;
-
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+package ru.primavistalab.lifegame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,9 +6,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Random;
 
-import static org.example.Constants.*;
+import static ru.primavistalab.lifegame.Constants.*;
 
-@Slf4j
 public class GameField extends JPanel {
     private final boolean[][] currentGeneration = new boolean[COLUMNS][ROWS];
     private final boolean[][] nextGeneration = new boolean[COLUMNS][ROWS];
@@ -19,7 +15,6 @@ public class GameField extends JPanel {
     private int paintCount = 0;
     private double totalPaintTime = 0;
 
-    @Getter
     private int generationCount = 0;
     private double totalGenerationTime = 0;
 
@@ -104,7 +99,7 @@ public class GameField extends JPanel {
         totalGenerationTime = 0;
         for (int col = 0; col < COLUMNS; col++) {
             for (int row = 0; row < ROWS; row++) {
-                currentGeneration[col][row] = nextGeneration[col][row] = false;
+                currentGeneration[col][row] = false;
             }
         }
     }
@@ -113,7 +108,7 @@ public class GameField extends JPanel {
         final var random = new Random();
         for (int col = 0; col < COLUMNS; col++) {
             for (int row = 0; row < ROWS; row++) {
-                currentGeneration[col][row] = nextGeneration[col][row] = random.nextBoolean();
+                currentGeneration[col][row] = random.nextBoolean();
             }
         }
     }
@@ -126,5 +121,9 @@ public class GameField extends JPanel {
     public double getMiddleGenerationTimeInMs() {
         if (generationCount == 0) return 0.0;
         else return totalGenerationTime / generationCount;
+    }
+
+    public int getGenerationCount() {
+        return generationCount;
     }
 }
