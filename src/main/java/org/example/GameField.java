@@ -14,7 +14,7 @@ import static org.example.Constants.*;
 public class GameField extends JPanel {
 
     private final boolean[][] currentGeneration = new boolean[COLUMNS][ROWS];
-    private final boolean[][] nextGenerationField = new boolean[COLUMNS][ROWS];
+    private final boolean[][] nextGeneration = new boolean[COLUMNS][ROWS];
 
     private int paintCount = 0;
     private double totalPaintTime = 0;
@@ -56,7 +56,7 @@ public class GameField extends JPanel {
     private void drawCell(final Graphics g, int col, int row, boolean isLife) {
         g.setColor(Color.BLACK);
         g.drawRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-        if (isLife) g.setColor(Color.GREEN);
+        if (isLife) g.setColor(Color.BLUE);
         else g.setColor(Color.WHITE);
         g.fillRect(col * CELL_SIZE + 1, row * CELL_SIZE + 1, CELL_SIZE - 1, CELL_SIZE - 1);
     }
@@ -69,16 +69,16 @@ public class GameField extends JPanel {
             for (int row = 0; row < ROWS; row++) {
                 final var aliveCellAround = aliveCellsAroundThis(col, row);
                 // в пустой (мёртвой) клетке, с которой соседствуют три живые клетки, зарождается жизнь;
-                if (!currentGeneration[col][row] && aliveCellAround == 3) nextGenerationField[col][row] = true;
+                if (!currentGeneration[col][row] && aliveCellAround == 3) nextGeneration[col][row] = true;
                     // если у живой клетки есть две или три живые соседки, то эта клетка продолжает жить;
-                else if (currentGeneration[col][row] && 2 <= aliveCellAround && aliveCellAround <= 3) nextGenerationField[col][row] = true;
+                else if (currentGeneration[col][row] && 2 <= aliveCellAround && aliveCellAround <= 3) nextGeneration[col][row] = true;
                     // в противном случае (если живых соседей меньше двух или больше трёх) клетка умирает («от одиночества» или «от перенаселённости»).
-                else nextGenerationField[col][row] = false;
+                else nextGeneration[col][row] = false;
             }
         }
 
         for (int col = 0; col < COLUMNS; col++) {
-            System.arraycopy(nextGenerationField[col], 0, currentGeneration[col], 0, ROWS);
+            System.arraycopy(nextGeneration[col], 0, currentGeneration[col], 0, ROWS);
         }
 
         final long generationTime = System.nanoTime() - generationStarted;
@@ -106,7 +106,7 @@ public class GameField extends JPanel {
         for (int col = 0; col < COLUMNS; col++) {
             for (int row = 0; row < ROWS; row++) {
                 currentGeneration[col][row] = false;
-                nextGenerationField[col][row] = false;
+                nextGeneration[col][row] = false;
             }
         }
     }
@@ -117,7 +117,7 @@ public class GameField extends JPanel {
             for (int row = 0; row < ROWS; row++) {
                 final var r = random.nextBoolean();
                 currentGeneration[col][row] = r;
-                nextGenerationField[col][row] = r;
+                nextGeneration[col][row] = r;
             }
         }
     }
